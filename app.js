@@ -151,7 +151,7 @@ class HabitTracker {
             const completedClass = isCompleted ? 'completed' : '';
 
             return `
-                <div class="habit-card ${completedClass}">
+                <div class="habit-card ${completedClass}" data-habit-id="${habit.id}">
                     <div class="habit-info">
                         <div class="habit-name">${this.escapeHtml(habit.name)}</div>
                         <div class="habit-stats">
@@ -172,13 +172,13 @@ class HabitTracker {
                     <div class="habit-actions">
                         <button 
                             class="btn-complete ${completedClass}" 
-                            onclick="tracker.toggleCompletion(${habit.id})"
+                            data-action="toggle"
                         >
                             ${isCompleted ? 'Undo' : 'Complete'}
                         </button>
                         <button 
                             class="btn-delete" 
-                            onclick="tracker.deleteHabit(${habit.id})"
+                            data-action="delete"
                         >
                             Delete
                         </button>
@@ -186,13 +186,42 @@ class HabitTracker {
                 </div>
             `;
         }).join('');
+
+        // Add event delegation for habit actions
+        this.attachHabitEventListeners();
+    }
+
+    attachHabitEventListeners() {
+        const container = document.getElementById('habits-container');
+        
+        // Remove old listener if exists
+        const newContainer = container.cloneNode(true);
+        container.parentNode.replaceChild(newContainer, container);
+        
+        // Add new listener with event delegation
+        newContainer.addEventListener('click', (e) => {
+            const button = e.target.closest('button[data-action]');
+            if (!button) return;
+
+            const habitCard = button.closest('.habit-card');
+            if (!habitCard) return;
+
+            const habitId = parseInt(habitCard.dataset.habitId);
+            const action = button.dataset.action;
+
+            if (action === 'toggle') {
+                this.toggleCompletion(habitId);
+            } else if (action === 'delete') {
+                this.deleteHabit(habitId);
+            }
+        });
     }
 
     updateStats() {
         const totalHabits = this.habits.length;
         const completedToday = this.habits.filter(h => this.isCompletedToday(h)).length;
         const longestStreak = this.habits.length > 0 
-            ? Math.max(...this.habits.map(h => h.longestStreak))
+            ? this.habits.reduce((max, h) => Math.max(max, h.longestStreak), 0)
             : 0;
 
         document.getElementById('total-habits').textContent = totalHabits;
@@ -211,8 +240,13 @@ class HabitTracker {
     }
 
     loadHabits() {
-        const data = localStorage.getItem('habitTrackerData');
-        return data ? JSON.parse(data) : [];
+        try {
+            const data = localStorage.getItem('habitTrackerData');
+            return data ? JSON.parse(data) : [];
+        } catch (error) {
+            console.error('Failed to load habits from localStorage:', error);
+            return [];
+        }
     }
 }
 
