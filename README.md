@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Habit Tracker Pro - Final Project
 
 ## Project Overview
@@ -72,3 +73,7 @@ Tested and working on:
 - Data visualization with charts
 - Interactive elements and feedback
 - Professional color scheme
+=======
+# HabitTracker
+ simple habit tracker web app built with HTML, CSS, and JavaScript.
+>>>>>>> 4eb739a9cff4805a34467b8218295dd272e292d1
