@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Habit Tracker</h1>
+            <p class="subtitle">Build better habits, one day at a time</p>
+        </header>
+
+        <section class="add-habit-section">
+            <h2>Add New Habit</h2>
+            <form id="add-habit-form">
+                <input 
+                    type="text" 
+                    id="habit-name-input" 
+                    placeholder="Enter habit name (e.g., Exercise, Read, Meditate)" 
+                    required
+                    maxlength="50"
+                >
+                <button type="submit" class="btn-primary">Add Habit</button>
+            </form>
+        </section>
+
+        <section class="habits-section">
+            <h2>My Habits</h2>
+            <div id="habits-container">
+                <p class="empty-state">No habits yet. Add your first habit above! 🚀</p>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <h2>Overall Progress</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-habits">0</div>
+                    <div class="stat-label">Total Habits</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="completed-today">0</div>
+                    <div class="stat-label">Completed Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="longest-streak">0</div>
+                    <div class="stat-label">Longest Streak</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
